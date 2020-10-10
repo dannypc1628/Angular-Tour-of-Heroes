@@ -1,0 +1,9 @@
+<p>messages works!</p>
+<div *ngIf="messageService.messages.length">
+  <h2>訊息</h2>
+  <button type="button" (click)="messageService.clear()">清空訊息</button>
+
+  <div *ngFor="let mes of messageService.messages">
+    {{mes}}
+  </div>
+</div>
