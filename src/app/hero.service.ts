@@ -14,23 +14,28 @@ export class HeroService {
   private heroesUrl = 'api/heroes';
 
   constructor(private http: HttpClient
-    , private messageService: MessageService) { }
+          , private messageService: MessageService) { }
 
   getHeroes(): Observable<Hero[]> {
-    this.messageService.add('HeroService：獲取的英雄');
+    this.log('獲取的英雄');
     return this.http.get<Hero[]>(this.heroesUrl)
-          .pipe(
-                tap(_ => this.log('fetched heroes')),
-                catchError(this.handleError<Hero[]>('getHeroes', []))
-                );
+      .pipe(
+        tap(_ => this.log('fetched heroes')),
+        catchError(this.handleError<Hero[]>('getHeroes', []))
+      );
   }
 
   getHero(id: number): Observable<Hero> {
-    this.messageService.add(`HeroService：獲取指定英雄資料id=${id}`);
-    return of(HEROES.find(h => h.id === id));
+    const url = `${this.heroesUrl}/{id}`;
+    this.log(`獲取指定英雄資料id=${id}`);
+    return this.http.get<Hero>(url)
+      .pipe(
+        tap(_ => (this.log(`fetched ${id} hero`),
+          catchError(this.handleError<Hero>('getHero id=${id}'))
+        )));
   }
 
-  private log(message: string) {
+  private log(message: string):void {
     this.messageService.add(`HeroService：${message}`);
   }
 
