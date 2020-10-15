@@ -6,3 +6,10 @@
     </a>
   </li>
 </ul>
+<div>
+  <label>
+    新英雄名：
+    <input #heroName />
+  </label>
+  <button type="button" (click)="add(heroName.value);heroName.value ='';">新增</button>
+</div>
